@@ -1,0 +1,51 @@
+{% extends 'produse/base.html' %}
+
+<!--<style>-->
+<!--          tabel, th, td {-->
+<!--              border: 1px solid black;-->
+<!--          }-->
+<!--</style>-->
+
+{% block content %}
+    <div class="container">
+        <h2>Introduceti produsele aici:</h2>
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>PRODUS</th>
+                    <th>STATUS</th>
+                    <th>STERGE</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if products %}
+                    {% for product in products %}
+                        {% if product.cumparat %}
+                            <tr class="table-success">
+                                <td></td>
+                                <td class="linethrough">{{ product.product }}</td>
+                                <td><a href="{% url 'change_status' product.id %}">Renunta</a></td>
+                                <td><a href="{% url 'delete' product.id %}">Delete</a></td>
+                            </tr>
+                        {% else %}
+                            <tr class="table-danger">
+                                <td></td>
+                                <td>{{ product.product }}</td>
+                                <td><a href="{% url 'change_status' product.id %}">Cumpara</a></td>
+                                <td><a href="{% url 'delete' product.id %}">Delete</a></td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </tbody>   
+        </table>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-dark">Submit</button>
+        </form>
+    </div>
+
+{% endblock %}
